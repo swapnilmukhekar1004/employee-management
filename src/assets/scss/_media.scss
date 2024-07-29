@@ -1,0 +1,208 @@
+@media(max-width:991px) {
+    aside {
+        display: none;
+    }
+
+    .MblCardSection{
+        display: block;
+    }
+
+    .OutletSection {
+        width: 100%;
+        padding-bottom: 110px;
+
+        margin-left: 0%;
+        margin-top: 85px;
+    }
+
+    .TableSection {
+        display: none;
+    }
+
+    .bottomNavWrapper {
+        display: block;
+    }
+
+    .bottomNavWrapper {
+        ul {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 0px;
+            padding: 15px 0px;
+            background: #fff;
+            border-top-left-radius: 39px;
+            border-top-right-radius: 39px;
+            box-shadow: #679be87a 0px 3px 8px !important;
+
+            li {
+                margin-bottom: 0px;
+            }
+
+        }
+    }
+
+    .BottomNavigation {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        left: 0%;
+        padding: 0px;
+    }
+
+    .customRow {
+        --bs-gutter-x: 0rem !important;
+    }
+
+    .desktopNav {
+        display: none;
+    }
+
+    .CommonPageLayout {
+        background: none;
+
+
+    }
+
+    .MobileNav {
+        display: block;
+        background-image: url(/public/img/Header-bg.svg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: fixed;
+        width: 100%;
+        z-index: 999;
+
+    }
+
+    .activePage a::before {
+
+        left: 35%;
+        top: 86%;
+
+        transform: rotate(270deg);
+    }
+
+    .SearchTable{
+        background: none !important ;
+        margin-bottom: 20px;
+        width: 50% !important;
+        }
+}
+
+@media(max-width:772px) {
+    .LoginBtn {
+        width: 100% !important;
+        margin-top: 28px;
+
+    }
+
+    .DashobarCustomRow {
+        flex-wrap: nowrap !important;
+        overflow: auto !important;
+
+        .card {
+            border-radius: 4px !important;
+            height: 78px !important;
+
+            .card-body {
+                border-radius: 4px !important;
+            }
+        }
+    }
+
+    .custom-col {
+        width: 147px !important;
+    }
+
+    .DCard h2 {
+
+        font-size: 23px;
+    }
+
+    .departmentWiseName{
+        font-size: 18px;
+    }
+
+ 
+
+
+}
+
+
+@media (max-width:576px) {
+    .chartCard {
+        height: 334px !important;
+    }
+
+    .BarChartCard{
+        height: 200px !important;
+
+    }
+
+
+
+    .SearchTable{
+        background: none !important ;
+        width: 75% !important;
+     
+       }
+    
+
+    .LoginSection {
+        display: block !important;
+        background-image: none;
+        background-color: #fff !important;
+    }
+
+    .LoginCustonCard {
+        width: 100% !important;
+        padding: 9px 0px !important;
+        box-shadow: none !important;
+        min-height: 60vh;
+    }
+
+    .DesktopSection {
+        display: none;
+    }
+
+
+    .MobileSection {
+        min-height: 39vh;
+        width: 100%;
+        background-image: url(/public/img/login-bg-1.svg);
+        background-position-x: -120%;
+        border-bottom-left-radius: 88px;
+        display: block;
+        position: relative;
+    }
+
+    .LoginTitle {
+        margin-bottom: 21px !important;
+        margin-top: 9px;
+        text-align: left !important;
+        font-size: 19px;
+    }
+
+    .LoginCustonCard {
+        .card-body {
+            display: flex !important;
+            align-items: center !important;
+            position: relative;
+
+
+
+            div {
+                width: 100%;
+
+                .LoginBtn {
+                    position: absolute;
+                    bottom: 0%;
+                    width: 92% !important;
+                }
+
+
+            }
+        }
+    }
+
+}

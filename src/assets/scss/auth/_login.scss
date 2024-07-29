@@ -1,0 +1,33 @@
+.LoginSection{
+    width: 100%;
+    min-height: 100vh;
+    background-image: url(/public/img/login-bg-1.svg);
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: contain;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.LoginTitle{
+    font-size: 20px;
+}
+
+.ForgotText{
+    font-size: 13px;
+   // color: $primary !important;
+    margin-top: -18px;
+    text-decoration: none;
+}
+
+.LoginCustonCard{
+    width: 470px !important;
+    padding: 36px 39px !important;
+    border-radius: 10px;
+    border-radius: 17px;
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px !important;
+    
+}
+.DesktopSection{
+    display: block;
+}
