@@ -100,6 +100,7 @@ body {
   border: none !important;
   background: none !important;
   box-shadow: none !important;
+  color: #333 !important;
 }
 
 .page-link:hover {
@@ -107,8 +108,9 @@ body {
 }
 
 .page-item.active .page-link {
-  background: #0dcaf0 !important;
-  border-radius: 31% !important;
+  background: #D2042D !important;
+  border-radius: 7px !important;
+  color: #fff !important;
 }
 
 .error {

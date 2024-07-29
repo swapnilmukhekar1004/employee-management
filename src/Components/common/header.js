@@ -1,6 +1,6 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import { FaAngleLeft } from "react-icons/fa6";
+import {useLocation } from "react-router-dom";
+
 
 export default function Header() {
   const location = useLocation();
@@ -18,7 +18,7 @@ export default function Header() {
   // Function to get the breadcrumb text based on the current location
   const renderBreadcrumbText = () => {
     if (pathName === "/") {
-      return "Dashboard";
+      return "Employee-List";
     } else {
       return getBreadcrumbText(pathName);
     }
@@ -33,7 +33,7 @@ export default function Header() {
               className="d-flex justify-content-between align-items-center"
               style={{ marginTop: "6%" }}
             >
-              <h5 className="text-white"><Link to="/"><FaAngleLeft className="text-white" /></Link> <span style={{marginLeft:"18px"}}>{renderBreadcrumbText()}</span></h5>
+              <h5 className="text-white"> <span style={{marginLeft:"18px"}}>{renderBreadcrumbText()}</span></h5>
 
               <img src="img/Logo.svg" alt="logo"></img>
             </div>

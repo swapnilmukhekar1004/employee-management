@@ -108,14 +108,16 @@ color: $grey !important;
     border: none !important;
     background: none !important;
     box-shadow: none !important;
+    color: #333 !important;
 } 
 .page-link:hover{
     background-color: none !important;
 }
 
 .page-item.active .page-link{
-    background: $secondary !important;
-    border-radius: 31% !important;
+    background: $danger !important;
+    border-radius: 7px !important;
+    color : #fff !important;
 
 
 }

@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-
-
-
-
-export default function Dashboard() {
+export default function EmpDetails() {
   const [projects, setProjects] = useState([]);
   const [closeProjectsCount, setCloseProjectsCount] = useState(0);
   const [runningProjectsCount, setrunningProjectsCount] = useState(0);

@@ -12,8 +12,8 @@ export default function Sidebar() {
 
   const Navigation = [
     { path: "/", icon: <AiOutlineDashboard /> },
-    { path: "/projectListing", icon: <FaList /> },
-    { path: "/createProject", icon: <IoMdAdd /> }
+    { path: "/Employee-Details", icon: <FaList /> },
+    { path: "/Create-Employee", icon: <IoMdAdd /> }
   ];
 
   return (

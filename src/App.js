@@ -10,9 +10,9 @@ import {
 } from "react-router-dom";
 
 
-import Dashboard from "./Components/pages/dashboard";
-import CreateProject from "./Components/pages/createproject";
-import Projectlisting from "./Components/pages/projectlisting";
+import EmpDetails from "./Components/pages/empDetails";
+import CreateEmp from "./Components/pages/createEmp";
+import Emplisting from "./Components/pages/emplisting";
 import Layout from "./Components/layout";
 
 const App = () => {
@@ -29,9 +29,9 @@ const AuthenticatedRoutes = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="createProject" element={<CreateProject />} />
-            <Route path="projectListing" element={<Projectlisting />} />
+            <Route path="Employee-Details"  element={<EmpDetails />} />
+            <Route path="Create-Employee"  element={<CreateEmp />} />
+            <Route  index  element={<Emplisting />} />
           </Route>
         
         </Routes>

@@ -5,7 +5,7 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import axios from "axios";
 
-export default function Projectlisting() {
+export default function Emplisting() {
   const [data, setData] = useState([]);
   const [allData, setAllData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");

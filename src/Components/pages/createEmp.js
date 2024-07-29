@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function CreateProject() {
+export default function CreateEmp() {
  
   const [formData, setFormData] = useState({
     name: "",
@@ -271,7 +271,7 @@ export default function CreateProject() {
                                   type="submit"
                                   className="btn btn-primary w-150 LoginBtn float-end"
                                 >
-                                  Save Project
+                                  Add
                                 </button>
                               </div>
                             </div>
