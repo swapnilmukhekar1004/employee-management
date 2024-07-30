@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useLocation, useNavigate} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+
 
 export default function CreateEmp() {
   const [formData, setFormData] = useState({
@@ -9,17 +14,19 @@ export default function CreateEmp() {
     mobile: "",
     country: "",
     state: "",
-    district: ""
+    district: "",
   });
   const [errors, setErrors] = useState({});
   const [countries, setCountries] = useState([]);
   const location = useLocation();
-  const navigate= useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const response = await axios.get("https://669b3f09276e45187d34eb4e.mockapi.io/api/v1/country");
+        const response = await axios.get(
+          "https://669b3f09276e45187d34eb4e.mockapi.io/api/v1/country"
+        );
         setCountries(response.data);
       } catch (error) {
         console.error("Error fetching countries:", error);
@@ -42,65 +49,88 @@ export default function CreateEmp() {
     }));
   };
 
-
-  //form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       try {
         if (formData.id) {
-          // Edit existing employee
-          await axios.put(`https://669b3f09276e45187d34eb4e.mockapi.io/api/v1/employee/${formData.id}`, formData);
+          await axios.put(
+            `https://669b3f09276e45187d34eb4e.mockapi.io/api/v1/employee/${formData.id}`,
+            formData
+          );
+          NotificationManager.success("Data saved successfully");
+           setTimeout(()=>  navigate("/") ,3000) // Redirect to the listing page after saving
         } else {
-          // Create new employee
-          await axios.post("https://669b3f09276e45187d34eb4e.mockapi.io/api/v1/employee", formData);
+          await axios.post(
+            "https://669b3f09276e45187d34eb4e.mockapi.io/api/v1/employee",
+            formData
+          );
+          NotificationManager.success("Data saved successfully");
         }
-        navigate("/"); // Redirect to the listing page after saving
+        
       } catch (error) {
+        NotificationManager.error("Error saving data", "Error", 3000);
         console.error("Error saving data:", error);
       }
     }
   };
 
-
-  //form validation 
   const validateForm = () => {
     let formErrors = {};
     let isValid = true;
 
     if (!formData.name.trim()) {
-      formErrors.name = "Name is Required";
+      formErrors.name = "Name is required";
+      NotificationManager.error("Name is required", "Validation Error", 3000);
       isValid = false;
     }
 
     if (!formData.emailId.trim()) {
-      formErrors.emailId = "Email is Required";
+      formErrors.emailId = "Email is required";
+      NotificationManager.error("Email is required", "Validation Error", 3000);
       isValid = false;
     }
 
     if (!formData.mobile.trim()) {
-      formErrors.mobile = "Mobile Number is Required";
+      formErrors.mobile = "Mobile number is required";
+      NotificationManager.error(
+        "Mobile number is required",
+        "Validation Error",
+        3000
+      );
       isValid = false;
     }
 
     if (!formData.country.trim()) {
-      formErrors.country = "Country is Required";
+      formErrors.country = "Country is required";
+      NotificationManager.error(
+        "Country is required",
+        "Validation Error",
+        3000
+      );
       isValid = false;
     }
 
     if (!formData.state.trim()) {
       formErrors.state = "State is required";
+      NotificationManager.error("State is required", "Validation Error", 3000);
       isValid = false;
     }
 
     if (!formData.district.trim()) {
       formErrors.district = "District is required";
+      NotificationManager.error(
+        "District is required",
+        "Validation Error",
+        3000
+      );
       isValid = false;
     }
 
     setErrors(formErrors);
     return isValid;
   };
+
   return (
     <>
       <div>
@@ -203,7 +233,7 @@ export default function CreateEmp() {
                                           key={country.cca2}
                                           value={country.country}
                                         >
-                                        {country.country}
+                                          {country.country}
                                         </option>
                                       ))}
                                     </select>
@@ -278,6 +308,7 @@ export default function CreateEmp() {
                             </div>
                           </div>
                         </form>
+                        <NotificationContainer />
                       </div>
                     </div>
                   </div>

@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { MdOutlineNavigateNext, MdOutlineNavigateBefore } from "react-icons/md";
-import { HiMiniBars3BottomLeft } from "react-icons/hi2";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaEye } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
 import axios from "axios";
-
+import { Sheet } from "react-modal-sheet";
 import { useNavigate } from "react-router-dom";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
 
 export default function Emplisting() {
   const [data, setData] = useState([]);
@@ -13,10 +17,13 @@ export default function Emplisting() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage] = useState(10);
+  const [isOpen, setOpen] = useState(false);
   const [sortBy, setSortBy] = useState("priority"); // State for sorting
-  const navigate = useNavigate(); // Hook for navigation
+  const [details, setDetails] = useState([]);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const navigate = useNavigate();
 
-
+   // Hook for navigation
 
   useEffect(() => {
     fetchData();
@@ -64,20 +71,18 @@ export default function Emplisting() {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-
-
-
-//Edit Employee function And Use this function in Create form Component
+  //Edit Employee function And Use this function in Create form Component
   const handleEditClick = (item) => {
     navigate("Create-Employee", { state: { employeeData: item } });
   };
 
-
-
-//Delete Employe function with api
+  //Delete Employe function with api
   const handleDeleteClick = async (id) => {
     try {
-      await axios.delete(`https://669b3f09276e45187d34eb4e.mockapi.io/api/v1/employee/${id}`);
+      await axios.delete(
+        `https://669b3f09276e45187d34eb4e.mockapi.io/api/v1/employee/${id}`
+      );
+      NotificationManager.success("Employee Delete Succesfully");
       setData(data.filter((item) => item.id !== id));
       setAllData(allData.filter((item) => item.id !== id));
     } catch (error) {
@@ -85,16 +90,19 @@ export default function Emplisting() {
     }
   };
 
+  const DetailsPopup = (item) => {
+    setOpen(true);
+    setModalVisible(!isModalVisible);
+    setDetails([item]);
+  };
 
+  const desktopDetails = (item) => {
+    navigate("Employee-Details", { state: { employeeData: item } });
+   
+  };
 
-
-//Pegination Code
-  const Pagination = ({
-    itemsPerPage,
-    totalItems,
-    paginate,
-    currentPage,
-  }) => {
+  //Pegination Code
+  const Pagination = ({ itemsPerPage, totalItems, paginate, currentPage }) => {
     const pageNumbers = [];
 
     for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
@@ -176,7 +184,7 @@ export default function Emplisting() {
                             {currentRecords.map((item) => (
                               <tr key={item.id}>
                                 <td className="ProjectNameTitle">
-                                  <p>{item.id}</p>
+                                  <p className="nav-link text-start p-0"  style={{ cursor: 'pointer' }} data-bs-toggle="tooltip" title="view details" onClick={() => desktopDetails(item)}>{item.id} </p>
                                 </td>
                                 <td>{item.name}</td>
                                 <td>{item.emailId}</td>
@@ -194,7 +202,10 @@ export default function Emplisting() {
                                   </button>
                                   <br></br>
 
-                                  <button   onClick={() => handleDeleteClick(item.id)} className="btn btn-outline-danger m-1">
+                                  <button
+                                    onClick={() => handleDeleteClick(item.id)}
+                                    className="btn btn-outline-danger m-1"
+                                  >
                                     <MdDelete />
                                   </button>
                                 </td>
@@ -219,7 +230,6 @@ export default function Emplisting() {
             </div>
           </div>
 
-
           {/* mobile section */}
           <div className="MblCardSection">
             <div className="">
@@ -231,7 +241,6 @@ export default function Emplisting() {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 ></input>
-
               </div>
             </div>
 
@@ -240,20 +249,21 @@ export default function Emplisting() {
                 <div className="col-lg-6 col-md-6">
                   <div className="card mb-3 text-capitalize" key={item.id}>
                     <div className="card-body">
-                      <div className="d-flex justify-content-between align-items-center">
+                      <div className="d-flex justify-content-between ">
                         <div>
                           {" "}
                           <p className="NameText" style={{ fontSize: "16px" }}>
-                          ID: {item.id}
-                          </p>{" "}
+                            ID: {item.id}
+                          </p>
                         </div>
-                        <p className="NameText">{item.status}</p>
+                        <div>
+                          <FaEye
+                            className="text-grey"
+                            onClick={() => DetailsPopup(item)}
+                          />
+                        </div>
                       </div>
-                      {/* <span className="DateMbl">
-                        <span>{item.startDate}</span>{" "}
-                        <span className="text-lowercase">to</span>{" "}
-                        <span>{item.endDate}</span>
-                      </span> */}
+                  
 
                       <div className="mt-3 InformSection">
                         <p>
@@ -266,7 +276,9 @@ export default function Emplisting() {
                         <p>
                           <span className="GreyText">
                             Email:
-                            <span className="DarkText ms-1">{item.emailId}</span>
+                            <span className="DarkText ms-1">
+                              {item.emailId}
+                            </span>
                           </span>
                         </p>
 
@@ -280,10 +292,11 @@ export default function Emplisting() {
                         <p>
                           <span className="GreyText">
                             Country:
-                            <span className="DarkText ms-1">{item.country}</span>
+                            <span className="DarkText ms-1">
+                              {item.country}
+                            </span>
                           </span>
                         </p>
-
 
                         <p>
                           <span className="GreyText">
@@ -295,19 +308,38 @@ export default function Emplisting() {
                         <p>
                           <span className="GreyText">
                             District:
-                            <span className="DarkText ms-1">{item.district}</span>
+                            <span className="DarkText ms-1">
+                              {item.district}
+                            </span>
                           </span>
                         </p>
 
                         <p>
                           <span className="GreyText">
                             CreatedAt:
-                            <span className="DarkText ms-1">{item.createdAt}</span>
+                            <span className="DarkText ms-1">
+                              {item.createdAt}
+                            </span>
                           </span>
                         </p>
-                      </div>
 
-                     
+                        <div className="d-flex justify-content-between">
+                          <button
+                            onClick={() => handleEditClick(item)}
+                            className="btn btn-outline-primary m-1"
+                          >
+                            <FaEdit />
+                          </button>
+                          <br></br>
+
+                          <button
+                            onClick={() => handleDeleteClick(item.id)}
+                            className="btn btn-outline-danger m-1"
+                          >
+                            <MdDelete />
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -315,17 +347,125 @@ export default function Emplisting() {
             </div>
 
             <div className="d-flex justify-content-center mt-4">
-                          <Pagination
-                            itemsPerPage={perPage}
-                            totalItems={sortedData.length}
-                            paginate={paginate}
-                            currentPage={currentPage}
-                          />
+              <Pagination
+                itemsPerPage={perPage}
+                totalItems={sortedData.length}
+                paginate={paginate}
+                currentPage={currentPage}
+              />
+            </div>
+
+            {/* mobile modal */}
+            <Sheet isOpen={isOpen} onClose={() => setOpen(false)}>
+              <Sheet.Container>
+                <Sheet.Header />
+                <Sheet.Content>
+                  <div className="container">
+                    <div className="d-flex justify-content-between align-items-center">
+                      <h5>Employe Details</h5>
+                      <div>
+                        {" "}
+                        <IoClose
+                          onClick={() => setOpen(false)}
+                          style={{ fontSize: "25px" }}
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      {details.map((item) => (
+                        <div
+                          className=" mb-3 text-capitalize mt-5"
+                          key={item.id}
+                        >
+                          <div className="">
+                            <div className="d-flex justify-content-between ">
+                              <div>
+                                {" "}
+                                <p
+                                  className="NameText"
+                                  style={{ fontSize: "16px" }}
+                                >
+                                  ID: {item.id}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="mt-3 InformSection">
+                              <p>
+                                <span className="GreyText">
+                                  Name:
+                                  <span className="DarkText ms-1">
+                                    {item.name}
+                                  </span>
+                                </span>
+                              </p>
+
+                              <p>
+                                <span className="GreyText">
+                                  Email:
+                                  <span className="DarkText ms-1">
+                                    {item.emailId}
+                                  </span>
+                                </span>
+                              </p>
+
+                              <p>
+                                <span className="GreyText">
+                                  Mobile No:
+                                  <span className="DarkText ms-1">
+                                    {item.mobile}
+                                  </span>
+                                </span>
+                              </p>
+
+                              <p>
+                                <span className="GreyText">
+                                  Country:
+                                  <span className="DarkText ms-1">
+                                    {item.country}
+                                  </span>
+                                </span>
+                              </p>
+
+                              <p>
+                                <span className="GreyText">
+                                  State:
+                                  <span className="DarkText ms-1">
+                                    {item.state}
+                                  </span>
+                                </span>
+                              </p>
+
+                              <p>
+                                <span className="GreyText">
+                                  District:
+                                  <span className="DarkText ms-1">
+                                    {item.district}
+                                  </span>
+                                </span>
+                              </p>
+
+                              <p>
+                                <span className="GreyText">
+                                  CreatedAt:
+                                  <span className="DarkText ms-1">
+                                    {item.createdAt}
+                                  </span>
+                                </span>
+                              </p>
+                            </div>
+                          </div>
                         </div>
-
-
+                      ))}
+                    </div>
+                  </div>
+                </Sheet.Content>
+              </Sheet.Container>
+              <Sheet.Backdrop />
+            </Sheet>
+          </div>
         </div>
-      </div>
+        <NotificationContainer />
       </div>
     </>
   );
