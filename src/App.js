@@ -10,7 +10,6 @@ import {
 } from "react-router-dom";
 
 
-import EmpDetails from "./Components/pages/empDetails";
 import CreateEmp from "./Components/pages/createEmp";
 import Emplisting from "./Components/pages/emplisting";
 import Layout from "./Components/layout";
@@ -29,7 +28,7 @@ const AuthenticatedRoutes = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route path="Employee-Details"  element={<EmpDetails />} />
+          
             <Route path="Create-Employee"  element={<CreateEmp />} />
             <Route  index  element={<Emplisting />} />
           </Route>

@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import "../src/assets/css/style.css"
 import 'react-notifications/lib/notifications.css';
+import 'react-responsive-modal/styles.css';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

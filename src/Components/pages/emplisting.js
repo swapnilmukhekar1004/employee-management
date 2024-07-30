@@ -11,6 +11,7 @@ import {
   NotificationManager,
 } from "react-notifications";
 
+
 export default function Emplisting() {
   const [data, setData] = useState([]);
   const [allData, setAllData] = useState([]);
@@ -92,14 +93,15 @@ export default function Emplisting() {
 
   const DetailsPopup = (item) => {
     setOpen(true);
+  
     setModalVisible(!isModalVisible);
     setDetails([item]);
   };
 
-  const desktopDetails = (item) => {
-    navigate("Employee-Details", { state: { employeeData: item } });
-   
-  };
+  
+
+ 
+
 
   //Pegination Code
   const Pagination = ({ itemsPerPage, totalItems, paginate, currentPage }) => {
@@ -184,7 +186,7 @@ export default function Emplisting() {
                             {currentRecords.map((item) => (
                               <tr key={item.id}>
                                 <td className="ProjectNameTitle">
-                                  <p className="nav-link text-start p-0"  style={{ cursor: 'pointer' }} data-bs-toggle="tooltip" title="view details" onClick={() => desktopDetails(item)}>{item.id} </p>
+                                  <p className="nav-link text-start p-0"  style={{ cursor: 'pointer' }} data-bs-toggle="tooltip" title="view details" onClick={() =>  DetailsPopup(item)}>{item.id} </p>
                                 </td>
                                 <td>{item.name}</td>
                                 <td>{item.emailId}</td>
@@ -372,7 +374,7 @@ export default function Emplisting() {
                       </div>
                     </div>
 
-                    <div>
+                    <div className=" d-md-flex justify-content-md-center">
                       {details.map((item) => (
                         <div
                           className=" mb-3 text-capitalize mt-5"
@@ -463,8 +465,10 @@ export default function Emplisting() {
               </Sheet.Container>
               <Sheet.Backdrop />
             </Sheet>
+
           </div>
         </div>
+
         <NotificationContainer />
       </div>
     </>
