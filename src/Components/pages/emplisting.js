@@ -5,6 +5,8 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import axios from "axios";
 
+import { useNavigate } from "react-router-dom";
+
 export default function Emplisting() {
   const [data, setData] = useState([]);
   const [allData, setAllData] = useState([]);
@@ -12,7 +14,9 @@ export default function Emplisting() {
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage] = useState(10);
   const [sortBy, setSortBy] = useState("priority"); // State for sorting
-  const [isOpen, setOpen] = useState(false);
+  const navigate = useNavigate(); // Hook for navigation
+
+
 
   useEffect(() => {
     fetchData();
@@ -20,7 +24,7 @@ export default function Emplisting() {
 
   useEffect(() => {
     if (searchTerm) {
-      const filteredData = allData.filter(item => item.id === searchTerm);
+      const filteredData = allData.filter((item) => item.id === searchTerm);
       setData(filteredData);
     } else {
       setData(allData); // Show all data when search term is empty
@@ -60,35 +64,37 @@ export default function Emplisting() {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const updateStatus = async (id, newStatus) => {
+
+
+
+//Edit Employee function And Use this function in Create form Component
+  const handleEditClick = (item) => {
+    navigate("Create-Employee", { state: { employeeData: item } });
+  };
+
+
+
+//Delete Employe function with api
+  const handleDeleteClick = async (id) => {
     try {
-      await axios.patch(
-        `https://669b3f09276e45187d34eb4e.mockapi.io/api/v1/employee/${id}`,
-        {
-          status: newStatus,
-        }
-      );
-      // Assuming the server updates successfully, we'll also update the local state
-      setData(
-        data.map((item) =>
-          item.id === id ? { ...item, status: newStatus } : item
-        )
-      );
-      setAllData(
-        allData.map((item) =>
-          item.id === id ? { ...item, status: newStatus } : item
-        )
-      );
+      await axios.delete(`https://669b3f09276e45187d34eb4e.mockapi.io/api/v1/employee/${id}`);
+      setData(data.filter((item) => item.id !== id));
+      setAllData(allData.filter((item) => item.id !== id));
     } catch (error) {
-      console.error("Error updating status:", error);
+      console.error("Error deleting data:", error);
     }
   };
 
-  const handleSortChange = (value) => {
-    setSortBy(value);
-  };
 
-  const Pagination = ({ itemsPerPage, totalItems, paginate, currentPage }) => {
+
+
+//Pegination Code
+  const Pagination = ({
+    itemsPerPage,
+    totalItems,
+    paginate,
+    currentPage,
+  }) => {
     const pageNumbers = [];
 
     for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
@@ -181,20 +187,14 @@ export default function Emplisting() {
                                 <td>{item.createdAt}</td>
                                 <td>
                                   <button
-                                    onClick={() =>
-                                      updateStatus(item.id, "running")
-                                    }
+                                    onClick={() => handleEditClick(item)}
                                     className="btn btn-outline-primary m-1"
                                   >
-                                  <FaEdit />
-                                  </button><br></br>
-                                 
-                                  <button
-                                    onClick={() =>
-                                      updateStatus(item.id, "cancelled")
-                                    }
-                                    className="btn btn-outline-danger m-1"
-                                  >
+                                    <FaEdit />
+                                  </button>
+                                  <br></br>
+
+                                  <button   onClick={() => handleDeleteClick(item.id)} className="btn btn-outline-danger m-1">
                                     <MdDelete />
                                   </button>
                                 </td>
@@ -219,6 +219,7 @@ export default function Emplisting() {
             </div>
           </div>
 
+
           {/* mobile section */}
           <div className="MblCardSection">
             <div className="">
@@ -226,105 +227,105 @@ export default function Emplisting() {
                 <input
                   type="text"
                   className="form-control SearchTable"
-                  placeholder="search by ID"
+                  placeholder="search"
                   value={searchTerm}
-                  onChange={handleSearchChange}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 ></input>
 
-                <HiMiniBars3BottomLeft
-                  className="BarIcon"
-                  onClick={() => setOpen(true)}
-                  style={{ fontSize: "25px" }}
-                />
               </div>
             </div>
 
             <div className="row">
               {currentRecords.map((item) => (
-                <div className="col-lg-6 col-md-6" key={item.id}>
-                  <div className="card mb-3 text-capitalize">
+                <div className="col-lg-6 col-md-6">
+                  <div className="card mb-3 text-capitalize" key={item.id}>
                     <div className="card-body">
                       <div className="d-flex justify-content-between align-items-center">
                         <div>
-                          <p className="NameText" style={{ fontSize: "18px" }}>
-                            {item.projectname}
-                          </p>
+                          {" "}
+                          <p className="NameText" style={{ fontSize: "16px" }}>
+                          ID: {item.id}
+                          </p>{" "}
                         </div>
                         <p className="NameText">{item.status}</p>
                       </div>
-                      <span className="DateMbl">
+                      {/* <span className="DateMbl">
                         <span>{item.startDate}</span>{" "}
                         <span className="text-lowercase">to</span>{" "}
                         <span>{item.endDate}</span>
-                      </span>
+                      </span> */}
 
                       <div className="mt-3 InformSection">
                         <p>
                           <span className="GreyText">
-                            Reason:
-                            <span className="DarkText">{item.reason}</span>
+                            Name:
+                            <span className="DarkText ms-1">{item.name}</span>
                           </span>
                         </p>
-                        <p className="d-flex">
-                          <span className="GreyText">
-                            Type:<span className="DarkText">{item.type}</span>{" "}
-                          </span>
-                          <span>
-                            <li className="GreyText ms-3">
-                              Category:
-                              <span className="DarkText">{item.category}</span>
-                            </li>
-                          </span>
-                        </p>
-                        <p className="d-flex">
-                          <span className="GreyText">
-                            Div:
-                            <span className="DarkText">{item.divison}</span>{" "}
-                          </span>
-                          <span>
-                            <li className="GreyText ms-3">
-                              Dept:
-                              <span className="DarkText">
-                                {item.department}
-                              </span>
-                            </li>
-                          </span>
-                        </p>
+
                         <p>
                           <span className="GreyText">
-                            Location:
-                            <span className="DarkText">{item.location}</span>{" "}
+                            Email:
+                            <span className="DarkText ms-1">{item.emailId}</span>
+                          </span>
+                        </p>
+
+                        <p>
+                          <span className="GreyText">
+                            Mobile No:
+                            <span className="DarkText ms-1">{item.mobile}</span>
+                          </span>
+                        </p>
+
+                        <p>
+                          <span className="GreyText">
+                            Country:
+                            <span className="DarkText ms-1">{item.country}</span>
+                          </span>
+                        </p>
+
+
+                        <p>
+                          <span className="GreyText">
+                            State:
+                            <span className="DarkText ms-1">{item.state}</span>
+                          </span>
+                        </p>
+
+                        <p>
+                          <span className="GreyText">
+                            District:
+                            <span className="DarkText ms-1">{item.district}</span>
+                          </span>
+                        </p>
+
+                        <p>
+                          <span className="GreyText">
+                            CreatedAt:
+                            <span className="DarkText ms-1">{item.createdAt}</span>
                           </span>
                         </p>
                       </div>
 
-                      <div className="d-flex justify-content-between mt-4">
-                        <button
-                          className="btn btn-outline-primary m-1 BtnCsm"
-                          onClick={() => updateStatus(item.id, "running")}
-                        >
-                          Start
-                        </button>
-                        <button
-                          className="btn btn-outline-primary m-1 BtnCsm"
-                          onClick={() => updateStatus(item.id, "closed")}
-                        >
-                          Close
-                        </button>
-                        <button
-                          className="btn btn-outline-primary m-1 BtnCsm"
-                          onClick={() => updateStatus(item.id, "cancelled")}
-                        >
-                          Cancel
-                        </button>
-                      </div>
+                     
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
+
+            <div className="d-flex justify-content-center mt-4">
+                          <Pagination
+                            itemsPerPage={perPage}
+                            totalItems={sortedData.length}
+                            paginate={paginate}
+                            currentPage={currentPage}
+                          />
+                        </div>
+
+
         </div>
+      </div>
       </div>
     </>
   );

@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useLocation, useNavigate} from "react-router-dom";
 
 export default function CreateEmp() {
- 
   const [formData, setFormData] = useState({
     name: "",
-    emailId :"",
-    mobile :"",
-    country:"",
-    state :"",
-    district :""
-   
+    emailId: "",
+    mobile: "",
+    country: "",
+    state: "",
+    district: ""
   });
   const [errors, setErrors] = useState({});
   const [countries, setCountries] = useState([]);
+  const location = useLocation();
+  const navigate= useNavigate();
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -27,6 +28,12 @@ export default function CreateEmp() {
     fetchCountries();
   }, []);
 
+  useEffect(() => {
+    if (location.state && location.state.employeeData) {
+      setFormData(location.state.employeeData);
+    }
+  }, [location.state]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -36,30 +43,27 @@ export default function CreateEmp() {
   };
 
 
+  //form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const response = await axios.post(
-          "https://669b3f09276e45187d34eb4e.mockapi.io/api/v1/employee",
-          formData
-        );
-        setFormData({
-          name: "",
-    emailId :"",
-    mobile :"",
-    country:"",
-    state :"",
-    district :""
-        });
-        
-        console.log("Data saved:", response.data);
+        if (formData.id) {
+          // Edit existing employee
+          await axios.put(`https://669b3f09276e45187d34eb4e.mockapi.io/api/v1/employee/${formData.id}`, formData);
+        } else {
+          // Create new employee
+          await axios.post("https://669b3f09276e45187d34eb4e.mockapi.io/api/v1/employee", formData);
+        }
+        navigate("/"); // Redirect to the listing page after saving
       } catch (error) {
         console.error("Error saving data:", error);
       }
     }
   };
 
+
+  //form validation 
   const validateForm = () => {
     let formErrors = {};
     let isValid = true;
@@ -94,12 +98,9 @@ export default function CreateEmp() {
       isValid = false;
     }
 
-   
-
     setErrors(formErrors);
     return isValid;
   };
-
   return (
     <>
       <div>
